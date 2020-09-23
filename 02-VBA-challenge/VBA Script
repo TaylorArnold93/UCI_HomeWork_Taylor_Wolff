@@ -1,0 +1,132 @@
+Attribute VB_Name = "Module1"
+Sub Stock_Yearly_Data():
+
+    ' Loop through all Worksheets that are currently active
+    ' --------------------------------------------
+    
+Dim WS As Worksheet
+    For Each WS In Worksheets
+   
+    ' Create the Variable Declarations
+        Dim Ticker As String
+        Dim Total_Volume As Double
+        Total_Volume = 0
+        Dim Row As Double
+        Row = 2
+        Dim Price_Open As Double
+        Dim Price_Close As Double
+        Dim Yearly_Change As Double
+        Dim Percent_Change As Double
+        Dim Column As Integer
+        Column = 1
+
+        Dim i As Long
+    
+ ' Create the Following Headings for Summary
+        Cells(1, "I").Value = "Ticker"
+        Cells(1, "J").Value = "Yearly Change"
+        Cells(1, "K").Value = "Percent Change"
+        Cells(1, "L").Value = "Total Stock Volume"
+       
+ ' Find the Last Row
+        LastRowIndex = WS.Cells(Rows.Count, "A").End(xlUp).Row
+        For i = 2 To LastRowIndex
+        
+        'Set the Initial Price Open
+        Price_Open = Cells(2, Column + 2).Value
+         
+         ' Loop all Ticker Symbol through the variable
+         ' Conditional to check the value of the ticker symbol and if we are still within the same ticker...
+            If Cells(i + 1, Column).Value <> Cells(i, Column).Value Then
+                
+                ' Set the Ticker variable
+                
+                Ticker = Cells(i, Column).Value
+                Cells(Row, Column + 8).Value = Ticker
+                
+                ' Set the Close Price
+                Close_Price = Cells(i, Column + 5).Value
+                
+                ' Add the Yearly Change
+                Yearly_Change = Close_Price - Price_Open
+                Cells(Row, Column + 9).Value = Yearly_Change
+                
+                ' Add the Percent Change
+                If (Price_Open = 0 And Price_Close = 0) Then
+                    Percent_Change = 0
+                ElseIf (Price_Open = 0 And Price_Close = 0) Then
+                    Percent_Change = 1
+                Else
+                    Percent_Change = Yearly_Change / Price_Open
+                    Cells(Row, Column + 10).Value = Percent_Change
+                    Cells(Row, Column + 10).NumberFormat = "0.00%"
+                
+                                
+        End If
+                
+                ' Add the Total Volume
+                Total_Volume = Total_Volume + Cells(i, Column + 6).Value
+                Cells(Row, Column + 11).Value = Total_Volume
+                
+                
+                ' Reset the Open Price
+                Price_Open = Cells(i + 1, Column + 2)
+                
+                ' Reset the Total_Volume
+                Total_Volume = 0
+            
+            ' If the cells are the same ticker
+            Else
+                Total_Volume = Total_Volume + Cells(i, Column + 6).Value
+                          ' Add one to the summary table row
+                 Row = Row + 1
+        End If
+
+        Next i
+        
+        ' Determine the Last Row of Yearly Change per WS
+        LastRowIndex = WS.Cells(Rows.Count, Column + 8).End(xlUp).Row
+        
+        ' Set the Cell Colors
+        For j = 2 To LastRowIndex
+            If (Cells(j, Column + 9).Value > 0 Or Cells(j, Column + 9).Value = 0) Then
+                Cells(j, Column + 9).Interior.ColorIndex = 10
+            ElseIf Cells(j, Column + 9).Value < 0 Then
+                Cells(j, Column + 9).Interior.ColorIndex = 3
+            End If
+        Next j
+        
+        ' Print the Greatest % Increase, % Decrease, and the Total Volume
+        Cells(1, Column + 15).Value = "Ticker"
+        Cells(1, Column + 16).Value = "Value"
+        Cells(2, Column + 14).Value = "Greatest % Increase"
+        Cells(3, Column + 14).Value = "Greatest % Decrease"
+        Cells(4, Column + 14).Value = "Greatest Total Volume"
+        
+        
+        ' Look at each of the rows and find the greatest value and the associate ticker
+        For Z = 2 To LastRowIndex
+            If Cells(Z, Column + 10).Value = Application.WorksheetFunction.Max(WS.Range("K2:K" & LastRowIndex)) Then
+                Cells(2, Column + 15).Value = Cells(Z, Column + 8).Value
+                Cells(2, Column + 16).Value = Cells(Z, Column + 10).Value
+                Cells(2, Column + 16).NumberFormat = "0.00%"
+            ElseIf Cells(Z, Column + 10).Value = Application.WorksheetFunction.Min(WS.Range("K2:K" & LastRowIndex)) Then
+                Cells(3, Column + 15).Value = Cells(Z, Column + 8).Value
+                Cells(3, Column + 16).Value = Cells(Z, Column + 10).Value
+                Cells(3, Column + 16).NumberFormat = "0.00%"
+            ElseIf Cells(Z, Column + 11).Value = Application.WorksheetFunction.Max(WS.Range("L2:L" & LastRowIndex)) Then
+                Cells(4, Column + 15).Value = Cells(Z, Column + 8).Value
+                Cells(4, Column + 16).Value = Cells(Z, Column + 11).Value
+            End If
+        Next Z
+        
+    Next WS
+        
+End Sub
+
+
+
+References
+VBA Max Function: How to Find Maximum Using Max in Excel VBA? WallStreetMojo. (2020, July 16). https://www.wallstreetmojo.com/vba-max/. 
+(I used the self-help with finding the greatest values. I wanted to cite my source for the formula.)
+
