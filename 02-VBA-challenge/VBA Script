@@ -69,10 +69,10 @@ Dim WS As Worksheet
                 Cells(Row, Column + 11).Value = Total_Volume
                 
                 
-                ' Reset the Open Price
+                ' Add the Price Open
                 Price_Open = Cells(i + 1, Column + 2)
                 
-                ' Reset the Total_Volume
+                ' Add the Total_Volume
                 Total_Volume = 0
             
             ' If the cells are the same ticker
@@ -84,10 +84,10 @@ Dim WS As Worksheet
 
         Next i
         
-        ' Determine the Last Row of Yearly Change per WS
+        ' Determine the Last Row of the Yearly Change per WS
         LastRowIndex = WS.Cells(Rows.Count, Column + 8).End(xlUp).Row
         
-        ' Set the Cell Colors
+        ' Add color to the cells (conditional)
         For j = 2 To LastRowIndex
             If (Cells(j, Column + 9).Value > 0 Or Cells(j, Column + 9).Value = 0) Then
                 Cells(j, Column + 9).Interior.ColorIndex = 10
@@ -96,7 +96,7 @@ Dim WS As Worksheet
             End If
         Next j
         
-        ' Print the Greatest % Increase, % Decrease, and the Total Volume
+        ' Print the Greatest % Increase, Greatest % Decrease, and the Greatest Total Volume
         Cells(1, Column + 15).Value = "Ticker"
         Cells(1, Column + 16).Value = "Value"
         Cells(2, Column + 14).Value = "Greatest % Increase"
@@ -104,7 +104,7 @@ Dim WS As Worksheet
         Cells(4, Column + 14).Value = "Greatest Total Volume"
         
         
-        ' Look at each of the rows and find the greatest value and the associate ticker
+        ' Review each of the rows and find the greatest value and the associated ticker within the cells
         For Z = 2 To LastRowIndex
             If Cells(Z, Column + 10).Value = Application.WorksheetFunction.Max(WS.Range("K2:K" & LastRowIndex)) Then
                 Cells(2, Column + 15).Value = Cells(Z, Column + 8).Value
