@@ -37,7 +37,7 @@ Dim WS As Worksheet
          
          ' Loop all Ticker Symbol through the variable
          ' Conditional to check the value of the ticker symbol and if we are still within the same ticker...
-            If Cells(i + 1, Column).Value != Cells(i, Column).Value Then
+            If Cells(i + 1, Column).Value <> Cells(i, Column).Value Then
                 
                 ' Set the Ticker variable
                 
