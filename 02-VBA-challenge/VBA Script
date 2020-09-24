@@ -22,20 +22,20 @@ Dim WS As Worksheet
 
         Dim i As Long
     
- ' Create the Following Headings for Summary
+ ' Create and Add the Following Headings for Summary
         Cells(1, "I").Value = "Ticker"
         Cells(1, "J").Value = "Yearly Change"
         Cells(1, "K").Value = "Percent Change"
         Cells(1, "L").Value = "Total Stock Volume"
        
- ' Find the Last Row
+ ' Find the Last Row Index
         LastRowIndex = WS.Cells(Rows.Count, "A").End(xlUp).Row
         For i = 2 To LastRowIndex
         
-        'Set the Initial Price Open
+        'Setting the Initial Price Open
         Price_Open = Cells(2, Column + 2).Value
          
-         ' Loop all Ticker Symbol through the variable
+         ' Loop all Ticker Symbol through the variables declarations
          ' Conditional to check the value of the ticker symbol and if we are still within the same ticker...
             If Cells(i + 1, Column).Value <> Cells(i, Column).Value Then
                 
@@ -44,14 +44,14 @@ Dim WS As Worksheet
                 Ticker = Cells(i, Column).Value
                 Cells(Row, Column + 8).Value = Ticker
                 
-                ' Set the Close Price
+                ' Setting the Close Price
                 Close_Price = Cells(i, Column + 5).Value
                 
-                ' Add the Yearly Change
+                ' Adding the Yearly Change
                 Yearly_Change = Close_Price - Price_Open
                 Cells(Row, Column + 9).Value = Yearly_Change
                 
-                ' Add the Percent Change
+                ' Adding the Percent Change
                 If (Price_Open = 0 And Price_Close = 0) Then
                     Percent_Change = 0
                 ElseIf (Price_Open = 0 And Price_Close = 0) Then
@@ -64,15 +64,15 @@ Dim WS As Worksheet
                                 
         End If
                 
-                ' Add the Total Volume
+                ' Adding the Total Volume
                 Total_Volume = Total_Volume + Cells(i, Column + 6).Value
                 Cells(Row, Column + 11).Value = Total_Volume
                 
                 
-                ' Add the Price Open
+                ' Adding the Price Open
                 Price_Open = Cells(i + 1, Column + 2)
                 
-                ' Add the Total_Volume
+                ' Adding the Total_Volume
                 Total_Volume = 0
             
             ' If the cells are the same ticker
