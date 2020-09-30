@@ -1,109 +1,43 @@
+# Importing the Library Folders
 import os
 import csv
 
-# List of files
-budget_data = ['1', '2']
+# Creating the path for PyBank CSV
+csvpath = os.path.join("..", "Resources", "budget_data.csv")
+with open('budget_data.csv', 'r') as csvfile:
+        csv_reader = csv_reader(csvfile, delimiter = ',')
+        csv_header = next(csvfile)
 
-#create variables for calculations
-month_counter = 0
-sum_revenue = 0
-sum_revenue_change = 0
+# Setting the PyBank Variables and creating an empty list to add the Budget_Data.csv Values 
 
-# Loop through files
-for files in budget_data:
-    # Get CSV
-    budget_dataCSV = os.path.join("/Users/manuelamachado/python-challenge/PyBank", 'budget_data_' + files + '.csv')
+total_months = 0
+total_profit_loss = 0
+total_differences = 0
+greatest_monthly_profit = 0
+lowest_monthly_profit = 0
 
-    #budget_data2.csv = os.path.join("PyBank", "budget_data2.csv")
-    #budget_data1.csv = os.path.join("PyBank", "budget_data1.csv")
+#  add the values to the empty CSV list
 
+for row in csv_reader:
+        total_months.append(row[0])
+        total_profit_loss.append(int(row[1]))
 
-    # Open current CSV
-    with open(budget_dataCSV) as csvFile:
+for i in range(len(profit)-1):
+        total_differences.append(total_profit_loss[i+1]-total_profit_loss[i])
 
-        csvReader = csv.reader(csvFile, delimiter=',')
+# Understanding the min and max profits from the csv file
+greatest_increase_profit = max(total_differences)
+lowest_monthly_profit = min(total_differences)
 
-        # Skip headers
-        next(csvReader, None)
-        
-    
-        # Get data from first line
-        line = next(csvReader,None)
-        max_month = line[0]
-        min_month = line[0]
-        revenue = float(line[1])
-        min_revenue = revenue
-        max_revenue = revenue
-        previous_revenue = revenue
-        month_counter = 1
-        sum_revenue = float(line[1])
-        sum_revenue_change = 0
+# Understanding the min and max of the dates 
+increase = date[total_months.index(max(greatest_increase_profit))]
+decrease = date[total_months.index(min(lowest_monthly_profit))]
 
-        # Read one line at a time
-        for line in csvReader:
+# Summary of Financial Analysis 
 
-            # Increase counter for number of months in dataset
-            month_counter = month_counter + 1
-
-            revenue = float(line[1])
-
-            # Add to sum of revenue for data set
-            sum_revenue = sum_revenue + revenue
-
-            # Find change in revenue between this month and last month
-            revenue_change = revenue - previous_revenue
-
-            # Add change in revenue to net change in revenue for data set
-            sum_revenue_change = sum_revenue_change + revenue_change
-
-            # Determine if change in revenue is a max or min for data set thus far
-            if revenue_change > max_revenue:
-                max_month = line[0]
-                max_revenue = revenue_change
-
-            if revenue_change < min_revenue:
-                min_month = line[0]
-                min_revenue = revenue_change
-
-            # Set previous revenue 
-            previous_revenue = revenue
-
-        # Finish calculations
-        average_revenue = sum_revenue/month_counter
-        average_revenue_change = sum_revenue_change/(month_counter-1)
-
-        # Round decimal
-        sum_revenue = int(sum_revenue)
-        average_revenue_change = int(average_revenue_change)
-        max_revenue = int(max_revenue)
-        min_revenue = int(min_revenue)
-        
-        # Print analysis
-        print(f"Financial Analysis:")
-        print("-------------------------------------------------------")
-        print(f"Total Months: {month_counter}")
-        print(f"Total Revenue: {sum_revenue} USD")
-        print(f"Average Revenue Change: {average_revenue_change} USD")
-        print(f"Greatest Increase in Revenue: {max_month} {max_revenue} USD")
-        print(f"Greatest Decrease in Revenue: {min_month} {min_revenue} USD")
-        print("")
-        
-        # Name white file
-        output_file = budget_dataCSV[0:-4]
-
-        write_budget_dataCSV = f"{output_file}_pybank_results.txt"
-
-        # Open write file
-        filewriter = open(write_budget_dataCSV, mode = 'w')
-
-        # Print to write file
-        filewriter.write(f"Financial Analysis:\n")
-        filewriter.write("-------------------------------------------------------\n")
-        filewriter.write(f"Total Months: {month_counter}\n")
-        filewriter.write(f"Total Revenue: {sum_revenue} USD\n")
-        filewriter.write(f"Average Revenue Change: {average_revenue_change} USD\n")
-        filewriter.write(f"Greatest Increase in Revenue: {max_month} {max_revenue} USD\n")
-        filewriter.write(f"Greatest Decrease in Revenue: {min_month} {min_revenue} USD\n")
-        filewriter.write("")
-
-        filewriter.close()
+print("Financial Analysis")
+print(f"Total Months:{len(total_months)}")
+print(f"Total: ${sum(total_profit_loss)}")
+print(f"Average Change: {round(sum(total_differences)/len(total_profit_loss),2)}")
+print(f"Greatest Increase in Profits: {total_months[month_increase]} (${(str(increase))})")
+print(f"Greatest Decrease in Profits: {total_months[month_decrease]} (${(str(decrease))})")
