@@ -23,10 +23,10 @@ for row in budget_data:
         total_months.append(row[0])
         total_profit_loss.append(int(row[1]))
 
-        if i = []
-                average_profit_loss_date[0] = total_months[i]
+    if i = 0
+         average_profit_loss_date[0] = total_months[i]
         else 
-                average_profit_loss_date[total_profit_loss[i]] - total_profit_loss[i-1]] = total_months[i]
+             average_profit_loss_date[total_profit_loss[i]] - total_profit_loss[i-1]] = total_months[i]
 
 # Understanding the min and max profits from the csv file
 greatest_increase_profit = max(average_profit_loss_date)
