@@ -29,8 +29,8 @@ for row in budget_data:
                 average_profit_loss_date[total_profit_loss[i]] - total_profit_loss[i-1]] = total_months[i]
 
 # Understanding the min and max profits from the csv file
-greatest_increase_profit = max(total_differences)
-lowest_monthly_profit = min(total_differences)
+greatest_increase_profit = max(average_profit_loss_date)
+lowest_monthly_profit = min(average_profit_loss_date)
 
 # Understanding the min and max of the dates 
 increase = date[total_months.index(max(greatest_increase_profit))]
