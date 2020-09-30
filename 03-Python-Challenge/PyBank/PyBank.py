@@ -35,7 +35,6 @@ decrease = date[total_months.index(min(lowest_monthly_profit))]
 # Summary of Financial Analysis 
 
 print("Financial Analysis")
-print("------------------------")
 print(f"Total Months:{len(total_months)}")
 print(f"Total: ${sum(total_profit_loss)}")
 print(f"Average Change: {round(sum(total_differences)/len(total_profit_loss),2)}")
@@ -46,7 +45,6 @@ print(f"Greatest Decrease in Profits: {total_months[month_decrease]} (${(str(dec
 output = os.path.join(".", 'output.txt')
 with open(output, "w") as new:
 output.txt("Financial Analysis")
-output.txt("------------------------")
 output.txt(f"Total Months:{len(total_months)}")
 output.txt(f"Total: ${sum(total_profit_loss)}")
 output.txt(f"Average Change: {round(sum(total_differences)/len(total_profit_loss),2)}")
