@@ -13,8 +13,8 @@ with open('csv_path', 'r') as csv_file:
 total_months = list ()
 total_profit_loss = list ()
 average_profit_loss_date = dict ()
-greatest_monthly_profit = dict ()
-lowest_monthly_profit = dict ()
+greatest_monthly_profit = ()
+lowest_monthly_profit = ()
 i = 0
 
 #  add the values to the empty CSV list
@@ -41,6 +41,6 @@ decrease = date[total_months.index(min(lowest_monthly_profit))]
 print("Financial Analysis")
 print(f"Total Months:{len(total_months)}")
 print(f"Total: ${sum(total_profit_loss)}")
-print(f"Average Change: {round(sum(total_differences)/len(total_profit_loss),2)}")
+print(f"Average Change: {round(sum(average_profit_loss_date)/len(total_profit_loss),2)}")
 print(f"Greatest Increase in Profits: {total_months[month_increase]} (${(str(increase))})")
 print(f"Greatest Decrease in Profits: {total_months[month_decrease]} (${(str(decrease))})")
