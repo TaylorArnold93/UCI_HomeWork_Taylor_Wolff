@@ -5,18 +5,16 @@ import csv
 # Creating the path for PyBank CSV
 csv_path = os.path.join("Resources", "budget_data.csv")
 with open('csv_path', 'r') as csv_file:
-        open('output_analysis.txt' 'w') as text_file:
-
         budget_data = csv.reader(csv_file, delimiter = ',')
         budget_data_header = next(csv_file)
 
 # Setting the PyBank Variables and creating an empty list to add the Budget_Data.csv Values 
 
-total_months = list 0
-total_profit_loss = list 0
-average_profit_loss_date = dict 0
-greatest_monthly_profit = dict 0
-lowest_monthly_profit = dict 0
+total_months = list ()
+total_profit_loss = list ()
+average_profit_loss_date = dict ()
+greatest_monthly_profit = dict ()
+lowest_monthly_profit = dict ()
 i = 0
 
 #  add the values to the empty CSV list
@@ -25,7 +23,7 @@ for row in budget_data:
         total_months.append(row[0])
         total_profit_loss.append(int(row[1]))
 
-        if i = 0
+        if i = []
                 average_profit_loss_date[0] = total_months[i]
         else 
                 average_profit_loss_date[total_profit_loss[i]] - total_profit_loss[i-1]] = total_months[i]
