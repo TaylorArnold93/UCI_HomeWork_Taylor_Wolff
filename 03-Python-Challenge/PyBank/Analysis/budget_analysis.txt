@@ -4,3 +4,10 @@ Total: $38382578
 Average Change: $-2315.12
 Greatest Increase in Profits: Feb-2012 ($1926159)
 Greatest Decrease in Profits: Sep-2013 ($-2196167)
+
+
+
+
+References: (how to file write python)
+Code faster with line-of-Code completions, cloudless processing. (n.d.). Kite - AI Coding Assistant for Python and JavaScript. https://www.kite.com/python/answers/how-to-write-a-string-to-a-file-on-a-new-line-every-time-in-python#:~:text=Use%20the%20newline%20character%20%22%5Cn,open%20the%20file%20for%20writing
+Python File Write. (n.d.). Retrieved from https://www.w3schools.com/python/python_file_write.asp

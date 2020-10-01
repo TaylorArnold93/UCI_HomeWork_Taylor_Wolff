@@ -51,7 +51,7 @@ print("-------------------------------------------")
 
 file = open('output.txt','w')
 
-#Writing output to the file    
+# Writing the election results with the help of file.writer (reference in output file)   
 file.write("Election Results")
 file.write("\n-------------------------------------------")
 file.write("\nTotal votes:" + str(total_votes))
