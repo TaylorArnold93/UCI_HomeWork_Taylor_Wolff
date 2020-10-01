@@ -18,16 +18,16 @@ with open(election_csv) as csvfile:
     csvreader = csv.reader(csvfile, delimiter=",")
 
 # add total votes
-	for row in csvreader:
-		total_votes = total_votes + 1
-		candidates = row[2]
-		if(row[2] not in candidates):
-			candidates.append(row[2])
-			vote_count.append[row[2]] = vote_count[row[2]] + 1
+for row in csvreader:
+	total_votes = total_votes + 1
+	candidates = row[2]
+	if row[2] not in candidates:
+		candidates.append(row[2])
+		vote_count[row[2]] = vote_count[row[2]] + 1
 
 
 # Finding the winner of the election
-for person, vote_count in candidate_votes.items():
+for person, vote_count in candidates.items():
     percentage_vote[person] = '{0:.0%}'.format(vote_count / total_votes)
     if vote_count > winner_votes:
         winner_votes = vote_count
