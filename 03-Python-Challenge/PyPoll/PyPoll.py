@@ -3,51 +3,47 @@ import os
 import csv
 
 # Creating the path for PyPoll
-csvpath = os.path.join("..", "Resources", "election_data.csv")
+election_csv = os.path.join("..", "Resources", "election_data.csv")
 
 # Setting the PyPoll Variables 
 
+candidates = ""
+vote_count = {}
+percentage_vote = {}
+winner_votes = 0
+winner = ""
 total_votes = 0
-candidates = []
-vote_counter = []
-Winner_Vote_Count= []
-Winner_Name = 0
-i = 0
 
-with open(csvpath, 'r') as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=",")
+with open(election_csv) as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
 
-    for row in csv_reader:
-        row_count = row_count + 1
-        if row[2] not in candidates:
-            candidates.append(row[2])
-            vote_counter.append(0)
-        else:
-            vote_counter[candidates.index(row[2])] = voter_counter[candidates.index(row[2]) + 1
-# Results of the final count of the votes casted
-        vote_counter = 1
+# add total votes
+	for row in csvreader:
+		total_votes = total_votes + 1
+		candidates = row[2]
+		if(row[2] not in candidates):
+			candidates.append(row[2])
+			vote_count.append[row[2]] = vote_count[row[2]] + 1
+
+
 # Finding the winner of the election
+for person, vote_count in candidate_votes.items():
+    percentage_vote[person] = '{0:.0%}'.format(vote_count / total_votes)
+    if vote_count > winner_votes:
+        winner_votes = vote_count
+        winner = person
 
+# Zip lists together
+election_csv = zip(total_votes, candidates, vote_count, percentage_vote, winner, winner)
+# Set variable for output file
+output_file = os.path.join("election_data_results.csv")
 
+#  Open the output file
+with open(output_file, "w") as datafile:
+    writer = csv.writer(datafile)
 
+    # Write the header row
+    writer.writerow(["Election Results", "Total Votes:", "candidates", "Winner:"])
 
-
-# Creating the Election Results Winner 
-election_results = f"""
-	Election Results
-	----------------------
-	Total Votes = {votes_counter}
-	----------------------
-	{candidates_list[0]}: {candidates_percentage[candidates_list[0]]}% ({candidates_votes[candidates_list[0]]})
-	{candidates_list[1]}: {candidates_percentage[candidates_list[1]]}% ({candidates_votes[candidates_list[1]]})
-	{candidates_list[2]}: {candidates_percentage[candidates_list[2]]}% ({candidates_votes[candidates_list[2]]})
-	{candidates_list[3]}: {candidates_percentage[candidates_list[3]]}% ({candidates_votes[candidates_list[3]]})
-	----------------------
-	Winner: {popular_candidates}
-	----------------------
-	"""
-	# Write the election results as a text file
-	text_file.write(election_results)
-
-	# Print the election results to the terminal
-	print(election_results)
+    # Write in zipped rows
+    writer.writerows(election_csv)
