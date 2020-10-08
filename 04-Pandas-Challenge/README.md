@@ -15,3 +15,6 @@ Average Reading Score
 % Overall Passing (The percentage of students that passed math and reading.)
 Scores by School Size
 Scores by School Type
+
+
+Also - Analysis of the various findings and trends
