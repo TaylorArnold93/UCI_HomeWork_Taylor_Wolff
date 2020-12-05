@@ -2,6 +2,7 @@
 from flask import Flask, render_template
 from flask_pymongo import PyMongo
 import pandas as pd 
+import pymongo
 import scrape_mars
 
 # create Flask app
