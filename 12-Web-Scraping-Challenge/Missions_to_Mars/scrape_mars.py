@@ -1,93 +1,80 @@
 from splinter import Browser
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup
 import pandas as pd
-import datetime as dt
-import time
-import re
+import requests
+import pymongo
 
-def scrape():
-    # Initiate headless driver
+def init_browser():
+    # actual path to the chromedriver
     executable_path = {'executable_path':r"C:\Users\taylo\Documents\UCI Bootcamp 2020\UCI_HomeWork_Taylor_Wolff\12-Web-Scraping-Challenge\Missions_to_Mars\chromedriver.exe"}
     browser = Browser('chrome', **executable_path, headless=False)
-    news_title, news_paragraph = mars_news(browser)
 
-    final_data = {}
-    output = marsNews()
-    final_data["mars_news"] = output[0]
-    final_data["mars_paragraph"] = output[1]
-    final_data["mars_image"] = marsImage()
-    final_data["mars_facts"] = marsFacts()
-    final_data["mars_hemisphere"] = marsHem()
+def scrape():
+    browser = init_browser()
+    mars_dict ={}
 
-    browser.quit()
-    return final_data
-
-
-def mars_news(browser):
-    """Scrape Mars News"""
-    # nasa Location
-    # beautiful soup for html
+    # Mars News URL of page to be scraped
     mars_url = "https://mars.nasa.gov/news/"
     browser.visit(mars_url)
     html = browser.html
     soup = BeautifulSoup(html, "html.parser")
-    try:
-        slide = soup.select_one("ul.item_list li.slide")
-        # news title below
-        news_title=slide.find('div', class_="content_title").get_text()
-        # news paragraph below
-        news_p=slide.find('div', class_="article_teaser_body").get_text()
-    except AttributeError:
-        return None, None
-    return news_title, news_paragraph
+    # Retrieve the latest news title and paragraph
+    news_title=slide.find('div', class_="content_title").get_text()
+    news_p=slide.find('div', class_="article_teaser_body").get_text()
 
-def featured_image(browser):
-    """Collect Main Image"""
-    # image url and featured image
-    def marsImage():
-    image_url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars"
-    browser.visit(image_url)
+    # Mars Space Images - Featured Images/Scraped to be images
+    jpl_nasa_url = 'https://www.jpl.nasa.gov'
+    images_url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+    browser.visit(images_url)
     html = browser.html
-    soup = BeautifulSoup(html, "html.parser")
-    image = soup.find("img", class_="thumb")["src"]
-    featured_image_url = "https://www.jpl.nasa.gov" + image
-    return featured_image_url
+    images_soup = BeautifulSoup(html, 'html.parser')
+    # featured image link
+    img_path = images_soup.find_all('img')[3]["src"]
+    featured_image_url = jpl_nasa_url + img_path
 
-def mars_facts():
-    """Mars Facts"""
-    import pandas as pd
-    mars_facts_url = "https://space-facts.com/mars/"
-    browser.visit(mars_facts_url)
-    mars_table_data = pd.read_html(mars_facts_url)
-    mars_table_data = pd.DataFrame (mars_table_data[0])
-    mars_table_data.columns = ["Description", "Value"]
-    mars_table_data = mars_table_data.set_index("Description")
-    mars_facts = mars_table_data.to_html(header = False, index = False)
-    return mars_facts
+    # Mars facts 
+    mars_facts_url = 'https://space-facts.com/mars/'
+    mars_tables = pd.read_html(mars_facts_url)
+    mars_df = tables[2]
+    mars_df.columns = ["Description", "Value"]
+    html_tab = mars_df.to_html()
+    html_tab.replace('\n', '')
+    
+    # Mars hemisphere
+    usgs_url = 'https://astrogeology.usgs.gov'
+    hemispheres_url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    browser.visit(hemispheres_url)
+    hemispheres_html = browser.html
+    hemispheres_soup = BeautifulSoup(hemispheres_html, 'html.parser')
+    # Mars hemispheres data
+    all_mars_hemi = hemispheres_soup.find('div', class_='collapsible results')
+    mars_hemispheres = all_mars_hemi.find_all('div', class_='item')
+    hemisphere_image_urls = []
+    # Iterate through each hemisphere data
+    for i in mars_hemispheres:
+        # Collect Title
+        hemisphere = i.find('div', class_="description")
+        title = hemisphere.h3.text        
+        # Collect image link by browsing to hemisphere page
+        hemisphere_link = hemisphere.a["href"]    
+        browser.visit(usgs_url + hemisphere_link)        
+        image_html = browser.html
+        image_soup = BeautifulSoup(image_html, 'html.parser')        
+        image_link = image_soup.find('div', class_='downloads')
+        image_url = image_link.find('li').a['href']
+        # Create Dictionary to store title and url info
+        image_dict = {}
+        image_dict['title'] = title
+        image_dict['img_url'] = image_url        
+        hemisphere_image_urls.append(image_dict)
 
-def scrape_hemisphere(browser):
-    """Collecting the  Hemispheres"""
-    hemi_url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
-    browser.visit(hemi_url)
-    html = browser.html
-    soup = BeautifulSoup(html, "html.parser")
-    mars_hemisphere = []
+    # Mars 
+    mars_dict = {
+        "news_title": news_title,
+        "news_p": news_p,
+        "featured_image_url": featured_image_url,
+        "fact_table": str(html_tab),
+        "hemisphere_images": hemisphere_image_urls
+    }
 
-    products = soup.find("div", class_ = "result-list" )
-    hemispheres = products.find_all("div", class_="item")
-
-    for hemisphere in hemispheres:
-        title = hemisphere.find("h3").text
-        title = title.replace("Enhanced", "")
-        end_link = hemisphere.find("a")["href"]
-        image_link = "https://astrogeology.usgs.gov/" + end_link    
-        browser.visit(image_link)
-        html = browser.html
-        soup=BeautifulSoup(html, "html.parser")
-        downloads = soup.find("div", class_="downloads")
-        image_url = downloads.find("a")["href"]
-        mars_hemisphere.append({"title": title, "img_url": image_url})
-return mars_hemisphere
-
-if __name__ == "__main__":
-    print(scrape())
+    return mars_dict
