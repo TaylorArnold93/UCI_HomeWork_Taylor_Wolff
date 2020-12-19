@@ -10,7 +10,7 @@ body {
   margin: 0;
 }
 
-/* The wrapper contains all of the page's content besides the footer, which is pushed to the bottom of the page */
+/* The wrapper contains all of the page's content  */
 .wrapper {
   position: relative;
   min-height: 100%;
@@ -18,7 +18,7 @@ body {
   overflow: auto;
 }
 
-/* The footer is positioned at the bottom of the page */
+/* The footer is at the bottom of the page */
 .footer {
   position: absolute;
   right: 0;
@@ -28,7 +28,7 @@ body {
   background: #4e5d6c;
 }
 
-/* The code styles the text at the bottom of the footer */
+/* The code styles for the footer text */
 .footer > .bottom {
   position: absolute;
   right: 0;
@@ -43,7 +43,7 @@ body {
   margin: 0;
 }
 
-/* This CSS styles the ufo icon in the navbar */
+/* This CSS styles the UFO icon in the navbar */
 .nav-ufo {
   position: absolute;
   bottom: 5px;
@@ -52,7 +52,7 @@ body {
   color: rgb(226, 209, 209);
 }
 
-/* Adding styles to the aside and filter form */
+/* Adding the styles tothe filter form */
 .ufo-form {
   margin-top: 50px;
 }
@@ -91,7 +91,7 @@ select {
   margin-top: 50px;
 }
 
-/* The styles for the parallax */
+/* styles for the parallax */
 .hero {
   position: relative;
   height: 550px;
@@ -117,7 +117,7 @@ select {
   animation-delay: 1.2s;
 }
 
-/* input placeholder color changes */
+/* placeholder the new color changes */
 .form-control::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: #c5d6e6;
@@ -138,7 +138,7 @@ select {
   color: #c5d6e6;
 }
 
-/* media queries which will only be activated at specific screen sizes */
+/* queries for the media, in which it will activate the screen  */
 @media (max-width: 800px) {
   #table-area td {
     font-size: 1em;
@@ -191,7 +191,7 @@ select {
   }
 }
 
-/* keyframe animations which will be used to animate the title */
+/* keyFrame animations for the title */
 @keyframes title {
   from {
     opacity: 0;
