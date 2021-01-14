@@ -1,4 +1,4 @@
-// Define SVG attributes
+// SVG attributes
 var width = parseInt(d3.select('#scatter')
     .style("width"));
 
@@ -7,19 +7,18 @@ var margin = 20;
 var labelArea = 110;
 var padding = 45;
 
-// Create SVG object 
+// Creating SVG object 
 var svg = d3.select("#scatter")
     .append("svg")
     .attr("width", width)
     .attr("height", height)
     .attr("class", "chart");
 
-// Labels for axes=================================
-// Add first g - tag for x axis text (css class)
+// Labels for axes
 svg.append("g").attr("class", "xText");
 var xText = d3.select(".xText");
 
-// Transform to adjust for xText
+// Transforming to xText
 var bottomTextX =  (width - labelArea)/2 + labelArea;
 var bottomTextY = height - margin - padding;
 xText.attr("transform",`translate(
@@ -27,8 +26,7 @@ xText.attr("transform",`translate(
     ${bottomTextY})`
     );
 
-// x-axis (bottom) ______________________________
-// Build xText details (css class)
+// Creating the x-axis (bottom) 
 xText.append("text")
     .attr("y", -19)
     .attr("data-name", "poverty")
@@ -50,12 +48,12 @@ xText.append("text")
     .attr("class","aText inactive x")
     .text("Household Income (Median)");
 
-// y-axis (left)___________________________________
-// Second g tag for yText (css class)
+// Creating the y-axis (left)
+
 svg.append("g").attr("class", "yText");
 var yText = d3.select(".yText");
 
-// Transform to adjust for yText
+// Transforming to yText
 var leftTextX =  margin + padding;
 var leftTextY = (height + labelArea) / 2 - labelArea;
 yText.attr("transform",`translate(
@@ -64,7 +62,7 @@ yText.attr("transform",`translate(
     )rotate(-90)`
     );
 
-// y-axis (left) ______________________________
+// y-axis (left) 
 // Build yText details (css class)
 yText .append("text")
     .attr("y", -22)
@@ -87,7 +85,7 @@ yText .append("text")
     .attr("class", "aText inactive y")
     .text("Healthcare (%)");
     
-// Visualize data  _______________________________________  
+// Visualize data  
 // Define dynamic circle radius
 var cRadius;
 function adjustRadius() {
@@ -98,7 +96,7 @@ function adjustRadius() {
 }
 adjustRadius();
 
-// Read in data as promise... and then... newer d3.js method
+// Adding the data
 d3.csv("assets/data/data.csv").then(function(data) {
     visualize(data);
 });
@@ -109,16 +107,16 @@ function visualize (csvData) {
    var yMin;
    var yMax;
 
-   // Current X & Y default selections
+   // Using the current X & Y selections
    var currentX = "poverty";
    var currentY = "obesity";
 
-   // Tool Tip info box (state, X stats,  Y stats)
+   // Tool Tip info box 
    var toolTip = d3.tip()
       .attr("class", "d3-tip")
       .offset([40, -60])
       .html(function(d) {
-            //Build text box
+            //Building the text box
             var stateLine = `<div>${d.state}</div>`;
             var yLine = `<div>${currentY}: ${d[currentY]}%</div>`;
             if (currentX === "poverty") {
@@ -128,23 +126,23 @@ function visualize (csvData) {
             return stateLine + xLine + yLine  
         });
 
-    // Add toolTip to svg
+    // Adding the toolTip to svg
     svg.call(toolTip);
 
     // Update upon axis option clicked
     function  labelUpdate(axis, clickText) {
-        // Switch active to inactive
+        // Switching the active to inactive
         d3.selectAll(".aText")
             .filter("." + axis)
             .filter(".active")
             .classed("active", false)
             .classed("inactive", true);
     
-        // switch the text just clicked to active
+        // switching to the text just clicked to active
         clickText.classed("inactive", false).classed("active", true);
         }
 
-    // Find the data max & min values for scaling
+    // Finding the data max & min values for scaling
     function xMinMax() {
       xMin = d3.min(csvData, function(d) {
         return parseFloat(d[currentX]) * 0.85;
@@ -163,7 +161,7 @@ function visualize (csvData) {
       }); 
     }
 
-    // Scatter plot X & Y axis computation
+    // Using the Scatter plot X & Y axis for computation
     xMinMax();
     yMinMax();
 
@@ -177,11 +175,11 @@ function visualize (csvData) {
         .domain([yMin, yMax])
         .range([height - margin - labelArea, margin])
 
-    // Create scaled X and Y axis
+    // Creating the scaled X and Y axis
     var xAxis = d3.axisBottom(xScale);
     var yAxis = d3.axisLeft(yScale);
 
-    // Calculate X and Y tick counts
+    // Calculating the X and Y tick counts
     function tickCount() {
       if (width <= 500) {
          xAxis.ticks(5);
@@ -194,7 +192,7 @@ function visualize (csvData) {
     }
     tickCount();
 
-    // append axis to the svg as group elements
+    // Appending the axis to the svg as group elements
     svg.append("g")
         .call(xAxis)
         .attr("class", "xAxis")
@@ -211,12 +209,12 @@ function visualize (csvData) {
             0 )`
         );
 
-    // Append the circles for each row of data
+    // Appending the circles for data for each row
     var allCircles = svg.selectAll("g allCircles").data(csvData).enter();
 
     allCircles.append("circle")
         .attr("cx", function(d) {
-            // xScale figures the pixels
+            // xScale 
             return xScale(d[currentX]);
         })
         .attr("cy", function(d) {
@@ -227,7 +225,7 @@ function visualize (csvData) {
             return "stateCircle " + d.abbr;
         })
         .on("mouseover", function(d) {
-            // Show tooltip when mouse is on circle
+            // Showing the tooltip when the mouse is hoovering over circle
             toolTip.show(d, this);
             // Highlight circle border
             d3.select(this).style("stroke", "#323232");
@@ -239,7 +237,7 @@ function visualize (csvData) {
             d3.select(this).style("stroke", "#e3e3e3")
         });
 
-        // Apply state text on circles (dx & dy are locations)
+        // Apply state text on circles 
         allCircles
             .append("text")
             .attr("font-size", cRadius)
@@ -249,7 +247,7 @@ function visualize (csvData) {
                return xScale(d[currentX]);
             })
             .attr("dy", function(d) {
-              // Push text to center by a 1/3
+              // Pushing the text to center 
               return yScale(d[currentY]) + cRadius /3;
             })
             .text(function(d) {
@@ -266,20 +264,20 @@ function visualize (csvData) {
                 d3.select("." + d.abbr).style("stroke", "#e3e3e3");
             });
 
-          // Dynamic graph on click
+          // Dynamic graph
           d3.selectAll(".aText").on("click", function() {
               var self = d3.select(this)
 
-              // Select inactive
+              // Selecting the inactive
               if (self.classed("inactive")) {
-                // Obtain name and axis saved in the label
+                // Labels that are saved on the axis and namel
                 var axis = self.attr("data-axis")
                 var name = self.attr("data-name")
 
                 if (axis === "x") {
                   currentX = name;
 
-                  // Update min and max of domain (x)
+                  // Updating min and max of domain (x)
                   xMinMax();
                   xScale.domain([xMin, xMax]);
 
@@ -287,7 +285,7 @@ function visualize (csvData) {
                         .transition().duration(800)
                         .call(xAxis);
                   
-                  // Update location of the circles
+                  // Updating the location of the circles
                   d3.selectAll("circle").each(function() {
                     d3.select(this)
                         .transition().duration(800)
@@ -303,15 +301,15 @@ function visualize (csvData) {
                             return xScale(d[currentX])                          
                         });
                   });          
-                  // Update
+                  // Update the labels 
                   labelUpdate(axis, self);
                 }
 
-                 // Update for Y axis selection 
+                 // Updating Y axis 
                 else {
                   currentY = name;
 
-                  // Update min and max of range (y)
+                  // Updating the min and max of thr range (y)
                   yMinMax();
                   yScale.domain([yMin, yMax]);
 
@@ -319,7 +317,7 @@ function visualize (csvData) {
                         .transition().duration(800)
                         .call(yAxis);
 
-                  // Update location of the circles
+                  // Updating the location of the circles
                   d3.selectAll("circle").each(function() {
                     d3.select(this)
                         .transition().duration(800)
@@ -332,12 +330,12 @@ function visualize (csvData) {
                       d3.select(this)
                         .transition().duration(800)
                         .attr("dy", function(d) {
-                           // Center text
+                           // Centering the text
                             return yScale(d[currentY]) + cRadius/3;                          
                         });
                   });
 
-                  // change the classes of to active and the clicked label
+                  // Changes to the active class and by using thr clicked label
                   labelUpdate(axis, self);
                 }
               }
