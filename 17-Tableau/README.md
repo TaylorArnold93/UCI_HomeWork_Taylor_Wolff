@@ -1,5 +1,9 @@
 # Tableau Homework - Citi Bike Analytics
 
+## https://public.tableau.com/profile/taylor.wolff#!/vizhome/CitiBikeDashboardTW/Consolidated
+
+
+
 ### Before You Begin
 
 * This assignment will be saved to your Tableau Public account rather than GitHub. 
@@ -10,7 +14,6 @@
 
 * You are able to load and continue working on the same workbook.
 
-** https://public.tableau.com/profile/taylor.wolff#!/vizhome/CitiBikeDashboardTW/Consolidated
 
 * When you are finished with your assignment, you will turn in the URL to your Tableau Public workbook along with any additional files used for your analysis. 
 
