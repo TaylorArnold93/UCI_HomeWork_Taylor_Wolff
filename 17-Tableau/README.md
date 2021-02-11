@@ -3,7 +3,6 @@
 ## https://public.tableau.com/profile/taylor.wolff#!/vizhome/CitiBikeDashboardTW/Consolidated
 
 
-
 ### Before You Begin
 
 * This assignment will be saved to your Tableau Public account rather than GitHub. 
@@ -18,8 +17,6 @@
 * When you are finished with your assignment, you will turn in the URL to your Tableau Public workbook along with any additional files used for your analysis. 
 
 ## Background
-
-![Citi-Bikes](Images/citi-bike-station-bikes.jpg)
 
 
 **Next, as a chronic over-achiever:**
